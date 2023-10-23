@@ -13,8 +13,11 @@ export async function receiveMessage(req, res) {
       to: messageDto.to,
       viewed: messageDto._data.viewed,
       sentAt: new Date(),
+      mediaUrl:
+        messageDto._data.type === "image" ? messageDto._data.body : undefined,
     };
 
+    console.log(message);
     io.to(req.body.session).emit(
       "message",
       JSON.stringify({ event: "message", body: JSON.stringify(message) })

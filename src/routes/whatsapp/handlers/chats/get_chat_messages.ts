@@ -9,21 +9,21 @@ export async function getChatMessages(req, res) {
     const googleID = extractUserFromJwt(req);
     //TODO:user id goes instead of default session
     const { data } = await axios.get(
-      `${wahaEndpoint}/${googleID}/chats/${chatId}/messages?limit=100`
+      `${wahaEndpoint}/${googleID}/chats/${chatId}/messages?limit=100&downloadMedia=true`
     );
 
-    const parsedMessages: WhatsappMessage[] = data
-      .filter((m) => m.body.length > 0)
-      .map((message) => {
-        return {
-          body: message.body,
-          fromMe: message.fromMe,
-          to: message.to,
-          sentAt: new Date(message.timestamp * 100),
-          viewed: message._data.viewed,
-          session: googleID,
-        };
-      });
+    const parsedMessages: WhatsappMessage[] = data.map((message) => {
+      return {
+        body: message.body,
+        fromMe: message.fromMe,
+        to: message.to,
+        sentAt: new Date(message.timestamp * 100),
+        viewed: message._data.viewed,
+        session: googleID,
+        mediaUrl: message.mediaUrl,
+      };
+    });
+    console.log(parsedMessages[parsedMessages.length - 1]);
     return res.status(200).json({ messages: parsedMessages });
   } catch (error: any) {
     console.log(error);
