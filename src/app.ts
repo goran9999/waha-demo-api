@@ -21,7 +21,7 @@ const io = new Server(server, { cors: { origin: "*" } });
 global.io = io;
 
 app.use(urlencoded({ extended: true }));
-app.use(json());
+app.use(json({ limit: "500mb" }));
 io.on("connection", (socket) => {
   socket.on("auth", (jwt) => {
     const email = decodePlainJwt(jwt);
