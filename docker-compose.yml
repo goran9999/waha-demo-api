@@ -1,0 +1,32 @@
+version: '1.1'
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+    volumes:
+      - ./:/app
+    ports:
+      - 5500:5500
+    networks:
+      - pgp-wa-network
+  waha:
+    container_name: waha
+    image: devlikeapro/whatsapp-http-api-plus:arm
+    ports:
+      - 3000:3000
+    networks:
+      - pgp-wa-network
+  mongo:
+    image: mongo
+    hostname: mongo
+    restart: always
+    container_name: mongodb_pgp_wa
+    ports:
+      - 27017:27017
+    networks:
+      - pgp-wa-network
+
+networks:
+  pgp-wa-network:
+    driver: bridge
