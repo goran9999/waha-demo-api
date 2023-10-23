@@ -14,7 +14,9 @@ export async function receiveMessage(req, res) {
       viewed: messageDto._data.viewed,
       sentAt: new Date(),
       mediaUrl:
-        messageDto._data.type === "image" ? messageDto._data.body : undefined,
+        messageDto._data.type === "image"
+          ? "data:image/png;base64," + messageDto._data.body
+          : undefined,
     };
 
     console.log(message);
